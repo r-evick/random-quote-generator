@@ -12,7 +12,7 @@ let quotes = [
   source: "Darth Vader",
   citation: "Star Wars: Episode V - The Empire Strikes Back",
   year: "1980",
-  site: "www.starwars.com"
+  site: `<a href="https://www.starwars.com">www.starwars.com</a>`
 },
 {
   quote: "Keep your face always toward the sunshine - and shadows will fall behind you.",
@@ -27,8 +27,11 @@ let quotes = [
   source: "Heraclitus",
 },
 {
-  quote: "Learning never exhausts the mind.",
-  source: "Leonardo da Vinci",
+  quote: "I'm gonna make him an offer he can't refuse.",
+  source: "Vito Corleone",
+  citation: "The Godfather",
+  year: "1972",
+  site: `<a href="https://www.paramount.com/movies/godfather-collection">www.paramount.com</a>`
 },
 
 ];
@@ -46,6 +49,17 @@ let quotes = [
     return randomQuote; 
   }
 
+//the below randomBgColor function generates a random color,
+//then uses it to display as a background color each time the page refreshes.
+
+function randomBgColor () {
+  let red = Math.floor(Math.random() * 256);
+  let green = Math.floor(Math.random() * 256);
+  let blue = Math.floor(Math.random() * 256);
+  let randomRGB = `rgb( ${red}, ${green}, ${blue} )`;
+  document.querySelector('body').style.background = `${randomRGB}`;
+}
+
 /*
   the below printQuote function calls the above getRandomQuote function in order to
   use a quote in an html string that will be shown in the browser.
@@ -59,50 +73,35 @@ function printQuote() {
 
  /*
    the if statements will check to see if the quote's objects are returned as undefined or not.
-   if not returned as undefined, the quote's objects will be displayed.
-   if returned as undefined, nothing will be displayed for that object.
+   if a value is returned, the quote's object will be displayed.
+   if returned as undefined, it will not be displayed.
+   finally, the randomBgColor function is called in order to refresh the background color when the quote is refreshed.
  */
 
- if ( typeof randomQuoteObject.citation !== "undefined" ) {
+ if ( randomQuoteObject.citation ) {
    html += `<span class="citation">${randomQuoteObject.citation}</span>`;
  };
 
- if ( typeof randomQuoteObject.year !== "undefined" ) {
+ if ( randomQuoteObject.year ) {
   html += `<span class="year">${randomQuoteObject.year}</span>`;
 };
  
-if ( typeof randomQuoteObject.site !== "undefined" ) {
-  html += `<span class="site">, <a href="https://www.starwars.com">${randomQuoteObject.site}</a></span>`;
+if ( randomQuoteObject.site ) {
+  html += `<span class="site">, ${randomQuoteObject.site}</span>`;
 };
 
 html += `</P>`;  //this is the closing paragraph tag for the above html variable.
 
-document.getElementById('quote-box').innerHTML = html; 
-}
+document.getElementById('quote-box').innerHTML = html;
 
-//the below randomBgColor function generates a random color,
-//then uses it to display as a background color each time the page refreshes.
-
-let red;
-let green;
-let blue;
-let randomRGB;
-
-function randomBgColor () {
-  red = Math.floor(Math.random() * 256);
-  green = Math.floor(Math.random() * 256);
-  blue = Math.floor(Math.random() * 256);
-  randomRGB = `rgb( ${red}, ${green}, ${blue} )`;
-  document.querySelector('body').style.background = `${randomRGB}`;
+randomBgColor(); 
 }
 
 /*
-the below code is used to refresh the random quote and random background color
-at intervals of every 5000 miliseconds (or 5 seconds).
+the below code is used to refresh the random quote at intervals of every 5000 miliseconds (or 5 seconds).
 this code snippet was found at https://www.encodedna.com/javascript/auto-refresh-page-every-10-second-using-javascript-setInterval-method.htm
 */
 
-setInterval(randomBgColor, 5000);
 setInterval(printQuote, 5000);
 
 /***
